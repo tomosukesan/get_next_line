@@ -6,7 +6,7 @@
 /*   By: ttachi <ttachi@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/31 23:03:13 by ttachi            #+#    #+#             */
-/*   Updated: 2023/01/01 17:14:18 by ttachi           ###   ########.fr       */
+/*   Updated: 2023/01/02 15:01:47 by ttachi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,12 @@
 #ifndef BUFFER_SIZE
 # define BUFFER_SIZE 1
 #endif
+
+typedef struct s_data
+{
+	/* data */
+}	t_data;
+
 
 char *get_next_line(int fd);
 
