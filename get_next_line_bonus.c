@@ -6,7 +6,7 @@
 /*   By: ttachi <ttachi@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/31 23:02:41 by ttachi            #+#    #+#             */
-/*   Updated: 2023/01/12 13:03:40 by ttachi           ###   ########.fr       */
+/*   Updated: 2023/01/12 13:35:53 by ttachi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,12 @@ static void	*ft_free(void *p);
 
 char	*get_next_line(int fd)
 {
-	static t_data	data = {0};
+	static t_data	data = {};
 	size_t			bs;
 	size_t			i;
 
+	if (!(0 <= fd && fd < 1024))
+		return (NULL);
 	data.array[fd] = &data;
 	bs = BUFFER_SIZE;
 	if (data.array[fd]->return_line)
