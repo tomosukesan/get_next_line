@@ -6,7 +6,7 @@
 /*   By: ttachi <ttachi@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/31 23:02:41 by ttachi            #+#    #+#             */
-/*   Updated: 2023/01/12 13:35:53 by ttachi           ###   ########.fr       */
+/*   Updated: 2023/01/12 14:01:55 by ttachi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,34 +19,32 @@ static void	*ft_free(void *p);
 
 char	*get_next_line(int fd)
 {
-	static t_data	data = {};
+	static t_data	data[1024];
 	size_t			bs;
 	size_t			i;
 
 	if (!(0 <= fd && fd < 1024))
 		return (NULL);
-	data.array[fd] = &data;
-	bs = BUFFER_SIZE;
-	if (data.array[fd]->return_line)
+		bs = BUFFER_SIZE;
+	if (data[fd].return_line)
 	{
-		data.array[fd]->ret_val = NULL;
-		data.array[fd]->return_line = FALSE;
+		data[fd].ret_val = NULL;
+		data[fd].return_line = FALSE;
 	}
-	if (bs == 0 || ft_isread(fd, data.array[fd], &bs) == NULL)
+	if (bs == 0 || ft_isread(fd, &data[fd], &bs) == NULL)
 		return (NULL);
-	if (data.array[fd]->buf_count != 0 && data.array[fd]->eof_flag)
-		bs = data.array[fd]->word_count;
-	i = data.array[fd]->buf_count;
-	if (data.array[fd]->word_count == 0 && data.array[fd]->eof_flag)
-		return (data.array[fd]->ret_val);
+	if (data[fd].buf_count != 0 && data[fd].eof_flag)
+		bs = data[fd].word_count;
+	i = data[fd].buf_count;
+	if (data[fd].word_count == 0 && data[fd].eof_flag)
+		return (data[fd].ret_val);
 	while (i < bs)
 	{
-		if (data.array[fd]->buf[i] == '\n' \
-			|| (data.array[fd]->eof_flag && i == bs - 1))
-			return (make_line(data.array[fd], bs, i));
+		if (data[fd].buf[i] == '\n' || (data[fd].eof_flag && i == bs - 1))
+			return (make_line(&data[fd], bs, i));
 		i++;
 	}
-	return (store_ret_val(fd, data.array[fd], bs));
+	return (store_ret_val(fd, &data[fd], bs));
 }
 
 static void	*ft_isread(int fd, t_data *data, size_t *bs)
