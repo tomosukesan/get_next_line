@@ -6,7 +6,7 @@
 /*   By: ttachi <ttachi@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/31 23:02:41 by ttachi            #+#    #+#             */
-/*   Updated: 2023/01/12 14:01:55 by ttachi           ###   ########.fr       */
+/*   Updated: 2023/01/12 14:31:09 by ttachi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,10 @@ char	*get_next_line(int fd)
 
 	if (!(0 <= fd && fd < 1024))
 		return (NULL);
-		bs = BUFFER_SIZE;
+	bs = BUFFER_SIZE;
 	if (data[fd].return_line)
-	{
 		data[fd].ret_val = NULL;
-		data[fd].return_line = FALSE;
-	}
+	data[fd].return_line = FALSE;
 	if (bs == 0 || ft_isread(fd, &data[fd], &bs) == NULL)
 		return (NULL);
 	if (data[fd].buf_count != 0 && data[fd].eof_flag)

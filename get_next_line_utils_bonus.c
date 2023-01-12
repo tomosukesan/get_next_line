@@ -6,7 +6,7 @@
 /*   By: ttachi <ttachi@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/31 23:03:00 by ttachi            #+#    #+#             */
-/*   Updated: 2023/01/12 11:32:22 by ttachi           ###   ########.fr       */
+/*   Updated: 2023/01/12 14:46:12 by ttachi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ char	*ft_strdup(const char *s)
 	char	*new;
 
 	len = ft_strlen(s);
-	new = malloc(sizeof(char) * (len + 1));
+	new = (char *)malloc(sizeof(char) * (len + 1));
 	if (new == NULL)
 		return (NULL);
 	ft_strlcpy(new, s, len + 1);
@@ -78,7 +78,7 @@ char	*ft_strljoin(char *s1, char *s2, size_t head, size_t tail)
 	else
 		s1_len = ft_strlen(s1);
 	join_len = tail - head;
-	result = malloc(sizeof(char) * (s1_len + join_len + 1));
+	result = (char *)malloc(sizeof(char) * (s1_len + join_len + 1));
 	if (result == NULL)
 		return (NULL);
 	if (s1 == NULL || s1[0] == '\0')
