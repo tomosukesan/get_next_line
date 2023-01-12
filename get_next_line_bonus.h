@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.h                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ttachi <ttachi@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/31 23:03:13 by ttachi            #+#    #+#             */
-/*   Updated: 2023/01/12 11:40:36 by ttachi           ###   ########.fr       */
+/*   Updated: 2023/01/12 12:05:26 by ttachi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#ifndef GET_NEXT_LINE_BONUS_H
+# define GET_NEXT_LINE_BONUS_H
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 1
@@ -26,12 +26,13 @@
 
 typedef struct s_data
 {
-	char	*buf;
-	size_t	buf_count;
-	ssize_t	word_count;
-	char	eof_flag;
-	char	*ret_val;
-	char	return_line;
+	struct s_data	*array[1024];
+	char			*buf;
+	size_t			buf_count;
+	ssize_t			word_count;
+	char			eof_flag;
+	char			*ret_val;
+	char			return_line;
 }	t_data;
 
 char	*get_next_line(int fd);
