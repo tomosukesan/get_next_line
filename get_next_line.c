@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttachi <ttachi@student.42tokyo.jp>         +#+  +:+       +#+        */
+/*   By: ttachi <ttachi@student.42tokyo.ja>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/31 23:02:41 by ttachi            #+#    #+#             */
-/*   Updated: 2023/01/12 14:07:32 by ttachi           ###   ########.fr       */
+/*   Updated: 2023/01/15 00:48:40 by ttachi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,12 +60,12 @@ static void	*ft_isread(int fd, t_data *data, size_t *bs)
 			data->eof_flag = TRUE;
 			free(data->buf);
 		}
-		else if (data->word_count <= 0)
+		else if (data->word_count < 0)
 		{
 			free(data->buf);
 			return (ft_free(data->ret_val));
 		}
-		else if ((size_t)data->word_count < *bs)
+		else if ((size_t)data->word_count == 0)
 		{
 			data->eof_flag = TRUE;
 			*bs = data->word_count;
