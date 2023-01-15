@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttachi <ttachi@student.42tokyo.jp>         +#+  +:+       +#+        */
+/*   By: ttachi <ttachi@student.42tokyo.ja>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/31 23:03:00 by ttachi            #+#    #+#             */
-/*   Updated: 2023/01/12 14:41:15 by ttachi           ###   ########.fr       */
+/*   Updated: 2023/01/15 21:46:16 by ttachi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@ char	*ft_strljoin(char *s1, char *s2, size_t head, size_t tail)
 	size_t	join_len;
 	char	*result;
 
+	if (s2 == NULL)
+		return (ft_strdup(s1));
 	if (s1 == NULL || *s1 == '\0')
 		s1_len = 0;
 	else

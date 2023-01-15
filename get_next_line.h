@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttachi <ttachi@student.42tokyo.jp>         +#+  +:+       +#+        */
+/*   By: ttachi <ttachi@student.42tokyo.ja>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/31 23:03:13 by ttachi            #+#    #+#             */
-/*   Updated: 2023/01/12 11:40:36 by ttachi           ###   ########.fr       */
+/*   Updated: 2023/01/15 21:52:53 by ttachi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ typedef struct s_data
 	char	*buf;
 	size_t	buf_count;
 	ssize_t	word_count;
-	char	eof_flag;
+	//char	eof_flag;
 	char	*ret_val;
 	char	return_line;
 }	t_data;
