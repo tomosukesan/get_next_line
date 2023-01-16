@@ -6,7 +6,7 @@
 /*   By: ttachi <ttachi@student.42tokyo.ja>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/31 23:02:41 by ttachi            #+#    #+#             */
-/*   Updated: 2023/01/16 22:22:39 by ttachi           ###   ########.fr       */
+/*   Updated: 2023/01/17 01:49:03 by ttachi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	*get_next_line(int fd)
 	i = data.buf_count;
 	while (i < data.bs || data.bs == 0)
 	{
-		if ((size_t)i == data.buf_count)
+		if (data.buf == NULL)
 		{
 			data.bs = ft_isread(fd, &data, BUFFER_SIZE);
 			if (data.ret_val != NULL && data.bs == 0)
@@ -37,35 +37,26 @@ char	*get_next_line(int fd)
 		if (data.buf[i] == '\n')
 			break ;
 		if (i == data.bs - 1)
-		{
-			i = store_ret_val(&data, data.bs);
-			if (i == FALSE)
+			if ((i = store_ret_val(&data, data.bs)) == FALSE)
 				return (NULL);
-		}
 		i++;
 	}
-	return (make_line(&data, data.bs, i));
+	return (make_line(&data, data.bs, (size_t)i));
 }
 
 static ssize_t	ft_isread(int fd, t_data *data, ssize_t bs)
 {
 	if (!(0 <= fd && fd <= FOPEN_MAX))
+		return (-1);
+	data->buf = (char *)malloc(sizeof(char) * bs);
+	if (data->buf == NULL)
 	{
-		printf("come");
+		ft_free(&data->ret_val);
 		return (-1);
 	}
-	if (data->buf_count == 0)
-	{
-		data->buf = (char *)malloc(sizeof(char) * bs);
-		if (data->buf == NULL)
-		{
-			ft_free(&data->ret_val);
-			return (-1);
-		}
-		data->word_count = read(fd, (void *)data->buf, bs);
-		if (data->word_count <= 0)
-			ft_free(&data->buf);
-	}
+	data->word_count = read(fd, (void *)data->buf, bs);
+	if (data->word_count <= 0)
+		ft_free(&data->buf);
 	return (data->word_count);
 }
 
@@ -90,7 +81,7 @@ static char	*make_line(t_data *data, size_t bs, size_t i)
 	}
 	data->buf_count = (i + 1) * !(i == bs - 1);
 	if (i == bs - 1)
-		free(data->buf);
+		ft_free(&(data->buf));
 	ft_free(&tmp);
 	return (data->ret_val);
 }
@@ -118,7 +109,7 @@ static ssize_t	store_ret_val(t_data *data, size_t bs)
 		ft_free(&data->ret_val);
 		return (FALSE);
 	}
-	free(data->buf);
+	ft_free(&(data->buf));
 	free(tmp);
 	data->buf_count = 0;
 	return (-1);

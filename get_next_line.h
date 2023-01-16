@@ -6,7 +6,7 @@
 /*   By: ttachi <ttachi@student.42tokyo.ja>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/31 23:03:13 by ttachi            #+#    #+#             */
-/*   Updated: 2023/01/16 20:54:37 by ttachi           ###   ########.fr       */
+/*   Updated: 2023/01/17 00:59:00 by ttachi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 typedef struct s_data
 {
 	char	*buf;
+	ssize_t	i;
 	size_t	buf_count;
 	ssize_t	word_count;
 	ssize_t	bs;

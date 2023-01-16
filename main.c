@@ -10,8 +10,8 @@ int main()
 	int		fd;
 	char	*line;
 
-	//fd = open("./test/first_file", O_RDONLY);
-	fd = -1;
+	fd = open("./test/first_file", O_RDONLY);
+	//fd = 0;
 	while (1)
 	{
 		line = get_next_line(fd);

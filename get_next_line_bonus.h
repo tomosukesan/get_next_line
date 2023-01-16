@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_bonus.h                              :+:      :+:    :+:   */
+/*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttachi <ttachi@student.42tokyo.jp>         +#+  +:+       +#+        */
+/*   By: ttachi <ttachi@student.42tokyo.ja>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/31 23:03:13 by ttachi            #+#    #+#             */
-/*   Updated: 2023/01/12 14:03:11 by ttachi           ###   ########.fr       */
+/*   Updated: 2023/01/17 00:59:00 by ttachi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_BONUS_H
-# define GET_NEXT_LINE_BONUS_H
+#ifndef GET_NEXT_LINE_H
+# define GET_NEXT_LINE_H
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 1
@@ -20,18 +20,19 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <stddef.h>
+# include <stdio.h>
 
 # define TRUE 1
 # define FALSE 0
 
 typedef struct s_data
 {
-	char			*buf;
-	size_t			buf_count;
-	ssize_t			word_count;
-	char			eof_flag;
-	char			*ret_val;
-	char			return_line;
+	char	*buf;
+	ssize_t	i;
+	size_t	buf_count;
+	ssize_t	word_count;
+	ssize_t	bs;
+	char	*ret_val;
 }	t_data;
 
 char	*get_next_line(int fd);

@@ -6,72 +6,65 @@
 /*   By: ttachi <ttachi@student.42tokyo.ja>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/31 23:02:41 by ttachi            #+#    #+#             */
-/*   Updated: 2023/01/15 01:10:49 by ttachi           ###   ########.fr       */
+/*   Updated: 2023/01/17 01:17:24 by ttachi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line_bonus.h"
+#include "get_next_line.h"
 
-static void	*ft_isread(int fd, t_data *data, size_t *bs);
-static char	*make_line(t_data *data, size_t bs, size_t i);
-static char	*store_ret_val(int fd, t_data *data, size_t bs);
-static void	*ft_free(void *p);
+static ssize_t	ft_isread(int fd, t_data *data, ssize_t bs);
+static char		*make_line(t_data *data, size_t bs, size_t i);
+static ssize_t	store_ret_val(t_data *data, size_t bs);
+static void		*ft_free(char **p);
 
 char	*get_next_line(int fd)
 {
-	static t_data	data[1024];
-	size_t			bs;
-	size_t			i;
+	static t_data	data[FOPEN_MAX];
 
-	if (!(0 <= fd && fd < 1024))
+	if (!(0 <= fd && fd <= FOPEN_MAX))
 		return (NULL);
-	bs = BUFFER_SIZE;
-	if (data[fd].return_line)
-		data[fd].ret_val = NULL;
-	data[fd].return_line = FALSE;
-	if (bs == 0 || ft_isread(fd, &data[fd], &bs) == NULL)
-		return (NULL);
-	if (data[fd].buf_count != 0 && data[fd].eof_flag)
-		bs = data[fd].word_count;
-	i = data[fd].buf_count;
-	if (data[fd].word_count == 0 && data[fd].eof_flag)
-		return (data[fd].ret_val);
-	while (i < bs)
+	data[fd].ret_val = NULL;
+	data[fd].i = data[fd].buf_count;
+	while (data[fd].i < data[fd].bs || data[fd].bs == 0)
 	{
-		if (data[fd].buf[i] == '\n' || (data[fd].eof_flag && i == bs - 1))
-			return (make_line(&data[fd], bs, i));
-		i++;
+		if ((size_t)data[fd].i == data[fd].buf_count)
+		{
+			data[fd].bs = ft_isread(fd, &data[fd], BUFFER_SIZE);
+			if (data[fd].ret_val != NULL && data[fd].bs == 0)
+				return (make_line(&data[fd], 1, data[fd].buf_count));
+			if (data[fd].bs <= 0)
+				return (NULL);
+		}
+		if (data[fd].buf[data[fd].i] == '\n')
+			break ;
+		if (data[fd].i == data[fd].bs - 1)
+		{
+			data[fd].i = store_ret_val(&data[fd], data[fd].bs);
+			if (data[fd].i == FALSE)
+				return (NULL);
+		}
+		data[fd].i++;
 	}
-	return (store_ret_val(fd, &data[fd], bs));
+	return (make_line(&data[fd], data[fd].bs, (size_t)data[fd].i));
 }
 
-static void	*ft_isread(int fd, t_data *data, size_t *bs)
+static ssize_t	ft_isread(int fd, t_data *data, ssize_t bs)
 {
+	if (!(0 <= fd && fd <= FOPEN_MAX))
+		return (-1);
 	if (data->buf_count == 0)
 	{
-		if (data->eof_flag)
-			return (NULL);
-		data->buf = (char *)malloc(sizeof(char) * (*bs));
+		data->buf = (char *)malloc(sizeof(char) * bs);
 		if (data->buf == NULL)
-			return (ft_free(data->ret_val));
-		data->word_count = read(fd, (void *)data->buf, *bs);
-		if (data->word_count == 0 && data->ret_val != NULL)
 		{
-			data->eof_flag = TRUE;
-			free(data->buf);
+			ft_free(&data->ret_val);
+			return (-1);
 		}
-		else if (data->word_count < 0)
-		{
-			free(data->buf);
-			return (ft_free(data->ret_val));
-		}
-		else if ((size_t)data->word_count == 0)
-		{
-			data->eof_flag = TRUE;
-			*bs = data->word_count;
-		}
+		data->word_count = read(fd, (void *)data->buf, bs);
+		if (data->word_count <= 0)
+			ft_free(&data->buf);
 	}
-	return ((void *)bs);
+	return (data->word_count);
 }
 
 static char	*make_line(t_data *data, size_t bs, size_t i)
@@ -84,24 +77,23 @@ static char	*make_line(t_data *data, size_t bs, size_t i)
 		tmp = ft_strdup(data->ret_val);
 		free(data->ret_val);
 		if (tmp == NULL)
-			return (ft_free(data->buf));
+			return (ft_free(&data->buf));
 	}
 	data->ret_val = ft_strljoin(tmp, data->buf, data->buf_count, i + 1);
 	if (data->ret_val == NULL)
 	{
 		free(data->buf);
-		ft_free(tmp);
-		return (ft_free(data->ret_val));
+		ft_free(&tmp);
+		return (ft_free(&data->ret_val));
 	}
-	data->buf_count = (i + 1) * (i != bs - 1);
+	data->buf_count = (i + 1) * !(i == bs - 1);
 	if (i == bs - 1)
 		free(data->buf);
-	ft_free(tmp);
-	data->return_line = TRUE;
+	ft_free(&tmp);
 	return (data->ret_val);
 }
 
-static char	*store_ret_val(int fd, t_data *data, size_t bs)
+static ssize_t	store_ret_val(t_data *data, size_t bs)
 {
 	char	*tmp;
 
@@ -111,24 +103,29 @@ static char	*store_ret_val(int fd, t_data *data, size_t bs)
 		tmp = ft_strdup(data->ret_val);
 		free(data->ret_val);
 		if (tmp == NULL)
-			return (ft_free(data->buf));
+		{
+			ft_free(&data->buf);
+			return (FALSE);
+		}
 	}
 	data->ret_val = ft_strljoin(tmp, data->buf, data->buf_count, bs);
 	if (data->ret_val == NULL)
 	{
 		free(data->buf);
-		ft_free(tmp);
-		return (ft_free(data->ret_val));
+		ft_free(&tmp);
+		ft_free(&data->ret_val);
+		return (FALSE);
 	}
 	free(data->buf);
 	free(tmp);
 	data->buf_count = 0;
-	return (get_next_line(fd));
+	return (-1);
 }
 
-static void	*ft_free(void *p)
+static void	*ft_free(char **p)
 {
-	if (p != NULL)
-		free(p);
+	if (*p != NULL)
+		free(*p);
+	*p = NULL;
 	return (NULL);
 }
