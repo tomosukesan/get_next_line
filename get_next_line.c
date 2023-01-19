@@ -6,7 +6,7 @@
 /*   By: ttachi <ttachi@student.42tokyo.ja>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/31 23:02:41 by ttachi            #+#    #+#             */
-/*   Updated: 2023/01/17 01:49:03 by ttachi           ###   ########.fr       */
+/*   Updated: 2023/01/19 14:53:58 by ttachi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,15 @@
 static ssize_t	ft_isread(int fd, t_data *data, ssize_t bs);
 static char		*make_line(t_data *data, size_t bs, size_t i);
 static ssize_t	store_ret_val(t_data *data, size_t bs);
-static void		*ft_free(char **p);
+//static char		*handle_str(t_data data, ssize_t *i);
 
 char	*get_next_line(int fd)
 {
 	static t_data	data;
 	ssize_t			i;
 
+	if (!(0 <= fd && fd <= FOPEN_MAX))
+		return (NULL);
 	data.ret_val = NULL;
 	i = data.buf_count;
 	while (i < data.bs || data.bs == 0)
@@ -32,22 +34,44 @@ char	*get_next_line(int fd)
 			if (data.ret_val != NULL && data.bs == 0)
 				return (make_line(&data, 1, data.buf_count));
 			if (data.bs <= 0)
-				return (NULL);
+				break ;
 		}
+		//if (data.buf[i] == '\n' || i == data.bs - 1)
+		//	return (handle_str(data, &i));
+		//i++;
+		// 別関数へ。if文同士を連結させてもいいかも。
+		/*
+		if (data.buf[i] == '\n' || i == data.bs - 1)
+			return (handle_str(data, i));
+		//
+		static char	*handle_str(t_data data, ssize_t i)
+		{
+			if (data.buf[i] == '\n')
+				return (make_line(&data, data.bs, (size_t)i));
+			if (i == data.bs - 1)
+			{
+				i = store_ret_val(&data, data.bs);
+				if (i == FALSE)
+					return (NULL);
+			}
+		}
+		*/
 		if (data.buf[i] == '\n')
-			break ;
+			return (make_line(&data, data.bs, (size_t)i));
 		if (i == data.bs - 1)
-			if ((i = store_ret_val(&data, data.bs)) == FALSE)
-				return (NULL);
+		{
+			i = store_ret_val(&data, data.bs);
+			if (i == FALSE)
+				break ;
+		}
+		// ここまで
 		i++;
 	}
-	return (make_line(&data, data.bs, (size_t)i));
+	return (NULL);
 }
 
 static ssize_t	ft_isread(int fd, t_data *data, ssize_t bs)
 {
-	if (!(0 <= fd && fd <= FOPEN_MAX))
-		return (-1);
 	data->buf = (char *)malloc(sizeof(char) * bs);
 	if (data->buf == NULL)
 	{
@@ -67,7 +91,7 @@ static char	*make_line(t_data *data, size_t bs, size_t i)
 	tmp = NULL;
 	if (data->ret_val != NULL)
 	{
-		tmp = ft_strdup(data->ret_val);
+		tmp = ft_strljoin(data->ret_val, NULL, 0, 0);
 		free(data->ret_val);
 		if (tmp == NULL)
 			return (ft_free(&data->buf));
@@ -86,6 +110,22 @@ static char	*make_line(t_data *data, size_t bs, size_t i)
 	return (data->ret_val);
 }
 
+/*
+static char	*handle_str(t_data data, ssize_t *i)
+{
+	printf("%s\n", data.ret_val);
+	if (data.buf[*i] == '\n')
+		return (make_line(&data, data.bs, (size_t)*i));
+	if (*i == data.bs - 1)
+	{
+		*i = store_ret_val(&data, data.bs);
+		if (*i == FALSE)
+			return (NULL);
+	}
+	return (NULL);
+}
+*/
+
 static ssize_t	store_ret_val(t_data *data, size_t bs)
 {
 	char	*tmp;
@@ -93,7 +133,7 @@ static ssize_t	store_ret_val(t_data *data, size_t bs)
 	tmp = NULL;
 	if (data->ret_val != NULL)
 	{
-		tmp = ft_strdup(data->ret_val);
+		tmp = ft_strljoin(data->ret_val, NULL, 0, 0);
 		free(data->ret_val);
 		if (tmp == NULL)
 		{
@@ -113,12 +153,4 @@ static ssize_t	store_ret_val(t_data *data, size_t bs)
 	free(tmp);
 	data->buf_count = 0;
 	return (-1);
-}
-
-static void	*ft_free(char **p)
-{
-	if (*p != NULL)
-		free(*p);
-	*p = NULL;
-	return (NULL);
 }
