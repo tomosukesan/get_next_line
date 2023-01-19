@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttachi <ttachi@student.42tokyo.jp>         +#+  +:+       +#+        */
+/*   By: ttachi <ttachi@student.42tokyo.ja>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/31 23:02:41 by ttachi            #+#    #+#             */
-/*   Updated: 2023/01/19 16:55:21 by ttachi           ###   ########.fr       */
+/*   Updated: 2023/01/19 21:47:44 by ttachi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char	*get_next_line(int fd)
 		{
 			data.bs = ft_isread(fd, &data, BUFFER_SIZE);
 			if (data.ret_val != NULL && data.bs == 0)
-				return (make_line(&data, 1, data.buf_count));
+				return (make_line(&data, data.bs, 0));
 			if (data.bs <= 0)
 				break ;
 		}
@@ -57,16 +57,18 @@ static char	judge_invalid_fd(int fd, t_data *data)
 
 static ssize_t	ft_isread(int fd, t_data *data, ssize_t bs)
 {
+	ssize_t	word_count;
+
 	data->buf = (char *)malloc(sizeof(char) * bs);
 	if (data->buf == NULL)
 	{
 		ft_free(&data->ret_val);
 		return (-1);
 	}
-	data->word_count = read(fd, (void *)data->buf, bs);
-	if (data->word_count <= 0)
+	word_count = read(fd, (void *)data->buf, bs);
+	if (word_count <= 0)
 		ft_free(&data->buf);
-	return (data->word_count);
+	return (word_count);
 }
 
 static char	*make_line(t_data *data, size_t bs, size_t i)
@@ -76,6 +78,8 @@ static char	*make_line(t_data *data, size_t bs, size_t i)
 	tmp = NULL;
 	if (data->ret_val != NULL)
 	{
+		if (bs == 0)
+			return (data->ret_val);
 		tmp = ft_strljoin(data->ret_val, NULL, 0, 0);
 		free(data->ret_val);
 		if (tmp == NULL)
@@ -88,9 +92,9 @@ static char	*make_line(t_data *data, size_t bs, size_t i)
 		ft_free(&tmp);
 		return (ft_free(&data->ret_val));
 	}
-	data->buf_count = (i + 1) * !(i == bs - 1);
 	if (i == bs - 1)
 		ft_free(&(data->buf));
+	data->buf_count = (i + 1) * !(i == bs - 1);
 	ft_free(&tmp);
 	return (data->ret_val);
 }

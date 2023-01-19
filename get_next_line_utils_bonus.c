@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ttachi <ttachi@student.42tokyo.ja>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/31 23:03:00 by ttachi            #+#    #+#             */
-/*   Updated: 2023/01/18 22:05:37 by ttachi           ###   ########.fr       */
+/*   Updated: 2023/01/19 19:53:34 by ttachi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,19 +53,6 @@ size_t	ft_strlcat(char *dest, const char *src, size_t destsize)
 	ft_strlcpy(dest + dest_len, src, destsize - dest_len);
 	return (dest_len + src_len);
 }
-
-//char	*ft_strdup(const char *s)
-//{
-//	size_t	len;
-//	char	*new;
-
-//	len = ft_strlen(s);
-//	new = (char *)malloc(sizeof(char) * (len + 1));
-//	if (new == NULL)
-//		return (NULL);
-//	ft_strlcpy(new, s, len + 1);
-//	return (new);
-//}
 
 char	*ft_strljoin(char *s1, char *s2, size_t head, size_t tail)
 {

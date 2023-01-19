@@ -10,7 +10,7 @@ int main()
 	int		fd;
 	char	*line;
 
-	// fd = open("./test/first_file", O_RDONLY);
+	//fd = open("./test/first_file", O_RDONLY);
 	fd = 0;
 	while (1)
 	{
