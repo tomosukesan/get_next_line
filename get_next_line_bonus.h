@@ -6,7 +6,7 @@
 /*   By: ttachi <ttachi@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/31 23:03:13 by ttachi            #+#    #+#             */
-/*   Updated: 2023/01/19 17:32:18 by ttachi           ###   ########.fr       */
+/*   Updated: 2023/01/19 17:49:59 by ttachi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ char	*get_next_line(int fd);
 size_t	ft_strlen(const char *str);
 size_t	ft_strlcpy(char *dest, const char *src, size_t destsize);
 size_t	ft_strlcat(char *dest, const char *src, size_t destsize);
-char	*ft_strdup(const char *s);
 char	*ft_strljoin(char *s1, char *s2, size_t head, size_t tail);
 void	*ft_free(char **p);
 
