@@ -20,6 +20,7 @@ int main()
 		free(line);
 	}
 	close (fd);
+	printf("%d\n", FOPEN_MAX);
 	//system("leaks a.out");
 	return (0);
 }
