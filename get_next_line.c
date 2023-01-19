@@ -6,7 +6,7 @@
 /*   By: ttachi <ttachi@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/31 23:02:41 by ttachi            #+#    #+#             */
-/*   Updated: 2023/01/19 16:18:13 by ttachi           ###   ########.fr       */
+/*   Updated: 2023/01/19 16:55:21 by ttachi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char	*get_next_line(int fd)
 
 static char	judge_invalid_fd(int fd, t_data *data)
 {
-	if (!(0 <= fd && fd <= FOPEN_MAX))
+	if (!(0 <= fd && fd < OPEN_MAX))
 		return (TRUE);
 	data->ret_val = NULL;
 	data->i = data->buf_count;

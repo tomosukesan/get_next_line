@@ -10,7 +10,8 @@ int main()
 	int		fd;
 	char	*line;
 
-	fd = open("./test/first_file", O_RDONLY);
+	// fd = open("./test/first_file", O_RDONLY);
+	fd = 0;
 	while (1)
 	{
 		line = get_next_line(fd);
@@ -20,7 +21,6 @@ int main()
 		free(line);
 	}
 	close (fd);
-	printf("%d\n", FOPEN_MAX);
 	//system("leaks a.out");
 	return (0);
 }
