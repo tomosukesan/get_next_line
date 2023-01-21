@@ -6,11 +6,11 @@
 /*   By: ttachi <ttachi@student.42tokyo.ja>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/31 23:02:41 by ttachi            #+#    #+#             */
-/*   Updated: 2023/01/19 21:48:11 by ttachi           ###   ########.fr       */
+/*   Updated: 2023/01/22 07:14:22 by ttachi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 static ssize_t	ft_isread(int fd, t_data *data, ssize_t bs);
 static char		*make_line(t_data *data, size_t bs, size_t i);
