@@ -6,11 +6,11 @@
 /*   By: ttachi <ttachi@student.42tokyo.ja>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/31 23:03:00 by ttachi            #+#    #+#             */
-/*   Updated: 2023/01/19 19:53:34 by ttachi           ###   ########.fr       */
+/*   Updated: 2023/05/11 08:40:46 by ttachi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 size_t	ft_strlen(const char *str)
 {
